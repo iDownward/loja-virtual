@@ -1,12 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React, {Fragment} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -15,10 +7,6 @@ import {
   Text,
   Image
 } from 'react-native';
-
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
 
 export default class CardProduct extends React.Component{
 
@@ -29,7 +17,7 @@ export default class CardProduct extends React.Component{
   render(){
     var textin = 'produto muito daora sadsadsadjsad asd'
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={() => this.props.navigation.navigate('ProductDetail')}>
           <View style={styles.cardHeader}>
             <Image source={require('../assets/react_native.png')} style={styles.imgProduct} />
             <Text>{this.props.product.name}</Text>
