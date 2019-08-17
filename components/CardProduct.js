@@ -28,6 +28,10 @@ import {
 
 export default class CardProduct extends React.Component{
 
+  addProduct = () => {
+
+  }
+
   render(){
     return (
       <View style={styles.container}>
@@ -46,7 +50,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDD',
     width: 160,
     alignItems: 'center',
-    margin: 2
+    margin: 2,
+    height: 160
   },
   button: {
     backgroundColor: '#F00'
