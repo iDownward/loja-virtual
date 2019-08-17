@@ -25,6 +25,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import CardProduct from './components/CardProduct';
+
 class App extends React.Component{
 
   constructor(){
@@ -46,11 +48,11 @@ class App extends React.Component{
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
         <Text>olaaa</Text>
-        <FlatList 
+        <FlatList horizontal={true}
         data={this.state.products}
-        keyExtractor={item => item.id}
+        keyExtractor={item => String(item.id)}
         renderItem={ ({item}) => 
-          <Text>{item.name}</Text>
+          <CardProduct product={item}/>
         }
         />
         </SafeAreaView>
