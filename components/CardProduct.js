@@ -8,22 +8,16 @@
 
 import React, {Fragment} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
+  Dimensions,
   View,
   Text,
-  StatusBar,
-  FlatList,
+  Image
 } from 'react-native';
 
 import {
-  Header,
-  LearnMoreLinks,
   Colors,
-  DebugInstructions,
-  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 export default class CardProduct extends React.Component{
@@ -33,35 +27,64 @@ export default class CardProduct extends React.Component{
   }
 
   render(){
+    var textin = 'produto muito daora sadsadsadjsad asd'
     return (
-      <View style={styles.container}>
-          <Text>{this.props.product.name}</Text>
-          <Text>LOrem ipsum balskd nal sjdsao jdsao jdashd iusaius hdiusa hd</Text>
+      <TouchableOpacity style={styles.container}>
+          <View style={styles.cardHeader}>
+            <Image source={require('../assets/react_native.png')} style={styles.imgProduct} />
+            <Text>{this.props.product.name}</Text>
+          </View>
+          <Text> 
+            {textin.length < 25 ? 
+                textin : textin.substring(0, 25) + '...'}
+          </Text>
+
+          <Text style={{fontWeight: 'bold'}}>Preço: 
+            <Text style={{fontWeight: 'normal'}}> R$ 20,50</Text>
+          </Text>
           <TouchableOpacity style={styles.button}>
-              <Text>Adicionar</Text>
+              <Text style={styles.btnText}>Adicionar</Text>
           </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     );
   }
 };
 
+const screen_height = Dimensions.get('screen').height;
+const screen_width = Dimensions.get('screen').width;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#DDD',
-    width: 160,
-    alignItems: 'center',
+    width: screen_width/2,
+    alignItems: 'flex-end',
     margin: 2,
-    height: 160
+    height: screen_height/2.5,
+    flexWrap: 'wrap'
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    height: screen_height/12
   },
   button: {
-    backgroundColor: '#F00'
+    backgroundColor: '#F00',
+    marginTop: 'auto',
+    width: '80%',
+    marginBottom: 5,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height: screen_height/15
   },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  btnText: {
+      textAlign: 'center',
+      color: '#FFF'
   },
+  imgProduct: {
+      alignSelf: 'flex-start',
+      height: 40,
+      width: 40,
+      marginRight: 5
+  }
 });

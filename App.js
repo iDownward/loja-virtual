@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
+  Dimensions,
   View,
   Text,
   StatusBar,
@@ -47,13 +48,14 @@ class App extends React.Component{
       <Fragment>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
-        <Text>olaaa</Text>
+        <Text style={styles.title}>Loja Virtual</Text>
+        <Text>Prodcutos</Text>
         <FlatList horizontal={true}
-        data={this.state.products}
-        keyExtractor={item => String(item.id)}
-        renderItem={ ({item}) => 
-          <CardProduct product={item}/>
-        }
+          data={this.state.products}
+          keyExtractor={item => String(item.id)}
+          renderItem={ ({item}) => 
+            <CardProduct product={item}/>
+          }
         />
         </SafeAreaView>
       </Fragment>
@@ -61,43 +63,17 @@ class App extends React.Component{
   }
 };
 
+const screen_height = Dimensions.get('screen').height;
+const screen_width = Dimensions.get('screen').width;
+
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: screen_height/5
+  }
 });
 
 export default App;
