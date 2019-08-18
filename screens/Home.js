@@ -5,13 +5,23 @@ import {
   Text,
   StatusBar,
   FlatList,
+  TouchableOpacity,
+  Image,
+  StyleSheet
 } from 'react-native';
 
 import CardProduct from '../components/CardProduct';
 
 class Home extends React.Component{
-  static navigationOptions = {
-      title: 'Loja virtual',
+  static navigationOptions = ({navigation}) => {
+      return {
+        title: 'Loja Virtual',
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <Image source={require('../assets/cart.png')} style={styles.imgCart} />
+          </TouchableOpacity>
+        )
+      };
   }
 
   constructor(){
@@ -49,5 +59,12 @@ class Home extends React.Component{
     );
   }
 };
+
+const styles = StyleSheet.create({
+  imgCart: {
+      width: 30,
+      height: 30,
+  }
+});
 
 export default Home;
