@@ -14,24 +14,32 @@ export default class CardProduct extends React.Component{
 
   }
 
+  navigate = () => {
+    this.props.navigation.navigate('ProductDetail', {
+      productName: this.props.product.name,
+      productDescription: this.props.product.description,
+      productPrice: this.props.product.price
+    });
+  }
+
   render(){
-    var textin = 'produto muito daora sadsadsadjsad asd'
+    const product = this.props.product;
     return (
-      <TouchableOpacity style={styles.container} onPress={() => this.props.navigation.navigate('ProductDetail')}>
+      <TouchableOpacity style={styles.container} onPress={() => this.navigate()}>
           <View style={styles.cardHeader}>
             <Image source={require('../assets/react_native.png')} style={styles.imgProduct} />
             <Text>
-            {this.props.product.name.length < 18 ? 
-                this.props.product.name : this.props.product.name.substring(0, 15) + '...'}
+            {product.name.length < 18 ? 
+                product.name : product.name.substring(0, 15) + '...'}
             </Text>
           </View>
           <Text> 
-            {this.props.product.description.length < 25 ? 
-                this.props.product.description : this.props.product.description.substring(0, 25) + '...'}
+            {product.description.length < 25 ? 
+                product.description : product.description.substring(0, 25) + '...'}
           </Text>
 
           <Text style={{fontWeight: 'bold'}}>Preço: 
-            <Text style={{fontWeight: 'normal'}}> R$ 20,50</Text>
+            <Text style={{fontWeight: 'normal'}}>{product.price}</Text>
           </Text>
           <TouchableOpacity style={styles.button}>
               <Text style={styles.btnText}>Adicionar</Text>
@@ -50,6 +58,7 @@ const styles = StyleSheet.create({
     width: screen_width/2,
     alignItems: 'flex-end',
     margin: 2,
+    paddingRight: 5,
     height: screen_height/2.5,
     flexWrap: 'wrap'
   },

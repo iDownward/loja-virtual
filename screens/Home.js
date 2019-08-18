@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import Axios from 'react-native-axios';
 import {
   SafeAreaView,
   Text,
@@ -21,10 +22,9 @@ class Home extends React.Component{
   }
 
   componentDidMount(){
-    fetch('http://9.232.24.93:8081/api/product')
-      .then(response => response.json())
-      .then(json => this.setState({products: json}))
-      ;
+    Axios.get('http://9.232.24.93:8080/api/product')
+      .then(response => this.setState({products: response.data}))
+      .catch(err => this.setState({products: []}));
   }
 
   render(){
@@ -33,13 +33,17 @@ class Home extends React.Component{
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
         <Text>Produtos</Text>
-        <FlatList horizontal={true}
-          data={this.state.products}
-          keyExtractor={item => String(item.id)}
-          renderItem={ ({item}) => 
-            <CardProduct product={item} navigation={this.props.navigation}/>
-          }
-        />
+        {this.state.products.length > 0 ?
+          <FlatList horizontal={true}
+            data={this.state.products}
+            keyExtractor={item => String(item.id)}
+            renderItem={ ({item}) => 
+              <CardProduct product={item} navigation={this.props.navigation}/>
+            }
+          />
+          :
+          <Text>Erroooooou</Text> 
+        }
         </SafeAreaView>
       </Fragment>
     );

@@ -9,13 +9,16 @@ export default class ProductDetail extends React.Component {
   
   render() {
     const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
+    const productName = this.props.navigation.getParam('productName', 'NO-NAME');
+    const productDescription = this.props.navigation.getParam('productDescription', '');
+    const productPrice = this.props.navigation.getParam('productPrice', 'NO-PRICE');
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Image source={require('../assets/react_native.png')} />  
         <View style={styles.textContainer}>
-          <Text style={styles.text}><B>Nome: </B>Produto Legal</Text>
-          <Text style={styles.text}><B>Descricao: </B>produto muito daora pra caramba selokooo oooooooooo ooooo o oo oo o </Text>
-          <Text style={styles.text}><B>Preco: </B>R$ 50,00</Text>
+          <Text style={styles.title}>{productName}</Text>
+          <Text style={styles.text}><B>Descricao: </B>{productDescription}</Text>
+          <Text style={styles.text}><B>Preco: </B>{productPrice}</Text>
         </View>
       </ScrollView>
     );
@@ -30,7 +33,12 @@ const styles = StyleSheet.create({
     textContainer: {
       marginLeft: '5%'
     },
+    title: {
+      textAlign: 'center',
+      fontSize: 23
+    },
     text: {
-        fontSize: 17
+        fontSize: 17,
+        marginTop: 10
     }
 });
