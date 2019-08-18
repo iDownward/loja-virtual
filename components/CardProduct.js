@@ -5,13 +5,28 @@ import {
   Dimensions,
   View,
   Text,
-  Image
+  Image,
+  AsyncStorage
 } from 'react-native';
+import { AsyncSubject } from 'rxjs';
 
 export default class CardProduct extends React.Component{
 
-  addProduct = () => {
+  constructor(props){
+    super(props);
+    this.state = {
+      teste: ''
+    }
+  }
 
+  addProduct = async () => {
+    try {
+      //await AsyncStorage.setItem(String(this.props.product.id), this.props.product.name);
+      const value = await AsyncStorage.getItem('1');
+      this.setState({teste: value});
+    } catch (error) {
+      this.setState({teste: 'erro'});
+    }
   }
 
   navigate = () => {
@@ -41,9 +56,10 @@ export default class CardProduct extends React.Component{
           <Text style={{fontWeight: 'bold'}}>Preço: 
             <Text style={{fontWeight: 'normal'}}>{product.price}</Text>
           </Text>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => this.addProduct()}>
               <Text style={styles.btnText}>Adicionar</Text>
           </TouchableOpacity>
+          <Text>{this.state.teste}</Text>
       </TouchableOpacity>
     );
   }
@@ -58,8 +74,8 @@ const styles = StyleSheet.create({
     width: screen_width/2,
     alignItems: 'flex-end',
     margin: 2,
-    paddingRight: 5,
-    height: screen_height/2.5,
+    paddingRight: 7,
+    height: screen_height/3,
     flexWrap: 'wrap'
   },
   cardHeader: {
