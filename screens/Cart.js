@@ -1,19 +1,44 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, ScrollView, StyleSheet, AsyncStorage } from 'react-native';
+import { Text, View, FlatList, ScrollView, StyleSheet, AsyncStorage } from 'react-native';
 
 export default class Cart extends React.Component {
 
+  constructor(props){
+      super(props);
+      this.state = {
+          products: []
+      }
+  }
+  
   static navigationOptions = {
       title: 'Carrinho',
   }
+
+  componentDidMount = async () => {
+      try{
+        const products = await AsyncStorage.getItem('cart');
+        if (products) {
+            this.setState({products: JSON.parse(products)});
+        }
+      }
+      catch(error) {
+        this.setState({products: []});
+      }
+    
+  } 
   
   render() {
 
     return (
       <ScrollView contentContainerStyle={styles.container}> 
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>Total: R$</Text>
-          <Text>{'hello'}</Text>
+        <View>
+          <FlatList
+            data={this.state.products}
+            keyExtractor={item => String(item.id)}
+            renderItem={({item}) => 
+              <Text>{item.name}</Text>
+            }
+          />
         </View>
       </ScrollView>
     );
@@ -24,17 +49,5 @@ export default class Cart extends React.Component {
 const styles = StyleSheet.create({
     container: {
       alignItems: 'center'
-    },
-    title: {
-      textAlign: 'center',
-      fontSize: 23
-    },
-    text: {
-        fontSize: 17,
-        marginTop: 10
-    },
-    imgCart: {
-        width: 30,
-        height: 30,
     }
 });

@@ -7,7 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  StyleSheet
+  StyleSheet,
+  AsyncStorage
 } from 'react-native';
 
 import CardProduct from '../components/CardProduct';
@@ -24,17 +25,42 @@ class Home extends React.Component{
       };
   }
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+
     this.state = {
       products: []
     }
+
+    this.cart = [];
   }
 
-  componentDidMount(){
-    Axios.get('http://9.232.24.93:8080/api/product')
-      .then(response => this.setState({products: response.data}))
-      .catch(err => this.setState({products: []}));
+  addProduct = (product) => {
+    try {
+      this.cart.push(product);
+      AsyncStorage.setItem('cart', JSON.stringify(this.cart));
+    } catch (error) {
+      // this.setState({teste: 'erro'});
+    }
+  }
+
+  async componentDidMount(){
+    await this.getProducts();
+    await this.getCart();
+  }
+
+  async getProducts() {
+    try {
+      const response = await Axios.get('http://9.232.24.93:8080/api/product')
+      this.setState({products: response.data});
+    } catch (err) {
+      this.setState({products: []})
+    }
+  }
+
+  async getCart() {
+    const list = await AsyncStorage.getItem('cart');
+    this.cart = list ? JSON.parse(list) : [];
   }
 
   render(){
@@ -47,12 +73,16 @@ class Home extends React.Component{
           <FlatList horizontal={true}
             data={this.state.products}
             keyExtractor={item => String(item.id)}
-            renderItem={ ({item}) => 
-              <CardProduct product={item} navigation={this.props.navigation}/>
+            renderItem={({item}) => 
+              <CardProduct
+                product={item}
+                navigation={this.props.navigation}
+                addProduct={_ => this.addProduct(item)}
+              />
             }
           />
           :
-          <Text>Erroooooou</Text> 
+          <Text>Carregando... Ou deu erro</Text> 
         }
         </SafeAreaView>
       </Fragment>

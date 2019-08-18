@@ -8,27 +8,8 @@ import {
   Image,
   AsyncStorage
 } from 'react-native';
-import { AsyncSubject } from 'rxjs';
 
 export default class CardProduct extends React.Component{
-
-  constructor(props){
-    super(props);
-    this.state = {
-      teste: ''
-    }
-  }
-
-  addProduct = async () => {
-    try {
-      //await AsyncStorage.setItem(String(this.props.product.id), this.props.product.name);
-      const value = await AsyncStorage.getItem('1');
-      this.setState({teste: value});
-    } catch (error) {
-      this.setState({teste: 'erro'});
-    }
-  }
-
   navigate = () => {
     this.props.navigation.navigate('ProductDetail', {
       productName: this.props.product.name,
@@ -56,10 +37,9 @@ export default class CardProduct extends React.Component{
           <Text style={{fontWeight: 'bold'}}>Preço: 
             <Text style={{fontWeight: 'normal'}}>{product.price}</Text>
           </Text>
-          <TouchableOpacity style={styles.button} onPress={() => this.addProduct()}>
+          <TouchableOpacity style={styles.button} onPress={() => this.props.addProduct()}>
               <Text style={styles.btnText}>Adicionar</Text>
           </TouchableOpacity>
-          <Text>{this.state.teste}</Text>
       </TouchableOpacity>
     );
   }
