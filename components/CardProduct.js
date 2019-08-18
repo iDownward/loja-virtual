@@ -20,11 +20,14 @@ export default class CardProduct extends React.Component{
       <TouchableOpacity style={styles.container} onPress={() => this.props.navigation.navigate('ProductDetail')}>
           <View style={styles.cardHeader}>
             <Image source={require('../assets/react_native.png')} style={styles.imgProduct} />
-            <Text>{this.props.product.name}</Text>
+            <Text>
+            {this.props.product.name.length < 18 ? 
+                this.props.product.name : this.props.product.name.substring(0, 15) + '...'}
+            </Text>
           </View>
           <Text> 
-            {textin.length < 25 ? 
-                textin : textin.substring(0, 25) + '...'}
+            {this.props.product.description.length < 25 ? 
+                this.props.product.description : this.props.product.description.substring(0, 25) + '...'}
           </Text>
 
           <Text style={{fontWeight: 'bold'}}>Preço: 

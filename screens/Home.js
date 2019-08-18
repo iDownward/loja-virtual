@@ -21,9 +21,10 @@ class Home extends React.Component{
   }
 
   componentDidMount(){
-    fetch('https://api.github.com/users/iDownward/repos')
+    fetch('http://9.232.24.93:8081/api/product')
       .then(response => response.json())
-      .then(json => this.setState({products: json}));
+      .then(json => this.setState({products: json}))
+      ;
   }
 
   render(){
