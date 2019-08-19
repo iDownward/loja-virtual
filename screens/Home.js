@@ -1,9 +1,9 @@
 import React, {Fragment} from 'react';
-import Axios from 'react-native-axios';
+import API from '../API';
 import {
   SafeAreaView,
+  Dimensions,
   Text,
-  StatusBar,
   FlatList,
   TouchableOpacity,
   Image,
@@ -29,45 +29,33 @@ class Home extends React.Component{
     super(props);
 
     this.state = {
-      products: []
+      products: [],
+      cart: []
     }
-
-    this.cart = [];
   }
 
   addProduct = (product) => {
     try {
-      this.cart.push(product);
-      AsyncStorage.setItem('cart', JSON.stringify(this.cart));
+      this.state.cart.push(product);
+      AsyncStorage.setItem('cart', JSON.stringify(this.state.cart));
     } catch (error) {
-      // this.setState({teste: 'erro'});
+
     }
   }
 
   async componentDidMount(){
-    await this.getProducts();
-    await this.getCart();
-  }
-
-  async getProducts() {
-    try {
-      const response = await Axios.get('http://9.232.24.93:8080/api/product')
-      this.setState({products: response.data});
-    } catch (err) {
-      this.setState({products: []})
-    }
-  }
-
-  async getCart() {
-    const list = await AsyncStorage.getItem('cart');
-    this.cart = list ? JSON.parse(list) : [];
+    const products = await API.getProducts();
+    const cart = await API.getCart();
+    this.setState({
+      products, cart
+    });
   }
 
   render(){
     return (
       <Fragment>
-        <StatusBar barStyle="dark-content" />
         <SafeAreaView>
+        <Image source={require('../assets/company_logo.jpg')} style={styles.imgLogo}/>
         <Text>Produtos</Text>
         {this.state.products.length > 0 ?
           <FlatList horizontal={true}
@@ -91,6 +79,9 @@ class Home extends React.Component{
 };
 
 const styles = StyleSheet.create({
+  imgLogo: {
+    alignSelf: 'center'
+  },
   imgCart: {
       width: 30,
       height: 30,
