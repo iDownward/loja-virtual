@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import API from '../API';
 import {
   SafeAreaView,
-  Dimensions,
   Text,
   FlatList,
   TouchableOpacity,
@@ -11,7 +10,7 @@ import {
   AsyncStorage
 } from 'react-native';
 
-import CardProduct from '../components/CardProduct';
+import CardProduct from '../components/CardProductHome';
 
 class Home extends React.Component{
   static navigationOptions = ({navigation}) => {

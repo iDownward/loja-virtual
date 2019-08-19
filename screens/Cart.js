@@ -1,12 +1,14 @@
 import React from 'react';
-import { Text, View, FlatList, ScrollView, StyleSheet, AsyncStorage } from 'react-native';
+import { Text, View, TouchableOpacity, FlatList, ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
+import CardProduct from '../components/CardProductCart';
 
 export default class Cart extends React.Component {
 
   constructor(props){
       super(props);
       this.state = {
-          products: []
+          products: [],
+          total: 0.0
       }
   }
   
@@ -28,26 +30,56 @@ export default class Cart extends React.Component {
   } 
   
   render() {
-
+    var total = 0.0;
+    this.state.products.map((item) => {
+      total += item.price;
+    });
     return (
       <ScrollView contentContainerStyle={styles.container}> 
-        <View>
-          <FlatList
-            data={this.state.products}
-            keyExtractor={item => item._id}
-            renderItem={({item}) => 
-              <Text>{item.name}</Text>
-            }
-          />
-        </View>
+          <Text style={styles.txtTotal}>Total: R$ {total.toFixed(2)}</Text>
+          <View style={styles.list}>
+            <FlatList
+              data={this.state.products}
+              keyExtractor={item => item._id}
+              renderItem={({item}) => 
+                  <CardProduct product={item} navigation={this.props.navigation}/>
+              }
+            />
+          </View>
+          <TouchableOpacity style={styles.button}>
+             <Text style={styles.btnText}>Finalizar Compra</Text>
+          </TouchableOpacity>
       </ScrollView>
     );
   }
 }
 
+const screen_height = Dimensions.get('screen').height;
+const screen_width = Dimensions.get('screen').width;
 
 const styles = StyleSheet.create({
     container: {
-      alignItems: 'center'
+      alignContent: 'center'
+    },
+    list: {
+      height: screen_height/1.7
+    },
+    button: {
+      backgroundColor: '#F00',
+      marginTop: 'auto',
+      width: '80%',
+      height: screen_height/14,
+      alignSelf: 'center',
+      justifyContent: 'center'
+    },
+    btnText: {
+      textAlign: 'center',
+      color: '#FFF',
+      fontSize: 20
+    },
+    txtTotal: {
+      fontSize: 40,
+      alignSelf: 'center',
+      marginVertical: 12
     }
 });

@@ -10,12 +10,7 @@ import {
 
 export default class CardProduct extends React.Component{
   navigate = () => {
-    this.props.navigation.navigate('ProductDetail', {
-      productName: this.props.product.name,
-      productDescription: this.props.product.description,
-      productPrice: this.props.product.price,
-      productImage: this.props.product.picture
-    });
+    this.props.navigation.navigate('ProductDetail', this.props.product);
   }
 
   render(){
@@ -33,8 +28,8 @@ export default class CardProduct extends React.Component{
             {product.description.length < 25 ? 
                 product.description : product.description.substring(0, 25) + '...'}
           </Text>
-          <Text  style={{marginRight: 7}}>{product.price}</Text>
-          <TouchableOpacity style={styles.button} onPress={() => this.props.addProduct()}>
+          <Text  style={{marginRight: 7}}>R$ {product.price.toFixed(2)}</Text>
+          <TouchableOpacity style={styles.button} onPress={this.props.addProduct}>
               <Text style={styles.btnText}>Adicionar</Text>
           </TouchableOpacity>
       </TouchableOpacity>
