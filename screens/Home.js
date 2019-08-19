@@ -46,8 +46,12 @@ class Home extends React.Component{
   async componentDidMount(){
     const products = await API.getProducts();
     const cart = await API.getCart();
+    let aux = [];
+    for(let i = 1; i < products.length; i++){  //apagar depois
+      aux.push(products[i]);
+    }
     this.setState({
-      products, cart
+      products: aux, cart
     });
   }
 
@@ -60,7 +64,7 @@ class Home extends React.Component{
         {this.state.products.length > 0 ?
           <FlatList horizontal={true}
             data={this.state.products}
-            keyExtractor={item => String(item.id)}
+            keyExtractor={item => item._id}
             renderItem={({item}) => 
               <CardProduct
                 product={item}

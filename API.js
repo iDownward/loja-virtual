@@ -8,7 +8,7 @@ export default class API{
 
   static async getProducts() {
     try {
-      const response = await Axios.get('https://api.github.com/users/iDownward/repos');
+      const response = await Axios.get('https://joguindavelha.mybluemix.net/api');
       console.log(response.data);
       return response.data;
     } catch (err) {

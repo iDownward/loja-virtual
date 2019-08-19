@@ -5,8 +5,7 @@ import {
   Dimensions,
   View,
   Text,
-  Image,
-  AsyncStorage
+  Image
 } from 'react-native';
 
 export default class CardProduct extends React.Component{
@@ -14,7 +13,8 @@ export default class CardProduct extends React.Component{
     this.props.navigation.navigate('ProductDetail', {
       productName: this.props.product.name,
       productDescription: this.props.product.description,
-      productPrice: this.props.product.price
+      productPrice: this.props.product.price,
+      productImage: this.props.product.picture
     });
   }
 
@@ -23,20 +23,17 @@ export default class CardProduct extends React.Component{
     return (
       <TouchableOpacity style={styles.container} onPress={() => this.navigate()}>
           <View style={styles.cardHeader}>
-            <Image source={require('../assets/react_native.png')} style={styles.imgProduct} />
+            <Image source={{uri: product.picture}} style={styles.imgProduct} />
             <Text>
             {product.name.length < 18 ? 
                 product.name : product.name.substring(0, 15) + '...'}
             </Text>
           </View>
-          <Text> 
+          <Text style={{marginRight: 7}}> 
             {product.description.length < 25 ? 
                 product.description : product.description.substring(0, 25) + '...'}
           </Text>
-
-          <Text style={{fontWeight: 'bold'}}>Preço: 
-            <Text style={{fontWeight: 'normal'}}>{product.price}</Text>
-          </Text>
+          <Text  style={{marginRight: 7}}>{product.price}</Text>
           <TouchableOpacity style={styles.button} onPress={() => this.props.addProduct()}>
               <Text style={styles.btnText}>Adicionar</Text>
           </TouchableOpacity>
@@ -50,11 +47,10 @@ const screen_width = Dimensions.get('screen').width;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#DDD',
+    backgroundColor: '#DEF',
     width: screen_width/2,
     alignItems: 'flex-end',
     margin: 2,
-    paddingRight: 7,
     height: screen_height/3,
     flexWrap: 'wrap'
   },
@@ -67,11 +63,11 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#F00',
     marginTop: 'auto',
-    width: '80%',
     marginBottom: 5,
+    width: '80%',
+    height: screen_height/15,
     alignSelf: 'center',
-    justifyContent: 'center',
-    height: screen_height/15
+    justifyContent: 'center'
   },
   btnText: {
       textAlign: 'center',

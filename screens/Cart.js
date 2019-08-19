@@ -34,7 +34,7 @@ export default class Cart extends React.Component {
         <View>
           <FlatList
             data={this.state.products}
-            keyExtractor={item => String(item.id)}
+            keyExtractor={item => item._id}
             renderItem={({item}) => 
               <Text>{item.name}</Text>
             }
