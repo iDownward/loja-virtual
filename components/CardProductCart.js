@@ -7,6 +7,7 @@ import {
   Text,
   Image
 } from 'react-native';
+//import Icon from 'react-native-icons';
 
 export default class CardProduct extends React.Component{
   navigate = () => {
@@ -28,8 +29,8 @@ export default class CardProduct extends React.Component{
             </Text>
             <Text>R$ {product.price.toFixed(2)}</Text>
           </View>
-          <TouchableOpacity>
-            <Text>APAGAR</Text>
+          <TouchableOpacity onPress={this.props.removeProduct}>
+            <Text>{product.quantity}</Text>
           </TouchableOpacity>
       </TouchableOpacity>
     );

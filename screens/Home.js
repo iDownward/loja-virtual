@@ -35,7 +35,17 @@ class Home extends React.Component{
 
   addProduct = (product) => {
     try {
-      this.state.cart.push(product);
+      var found = false
+      this.state.cart.map(item => {
+        if(item._id === product._id) {
+          item.quantity += 1;
+          found = true;
+        }
+      });
+      if(!found){
+        product['quantity'] = 1;
+        this.state.cart.push(product);
+      }
       AsyncStorage.setItem('cart', JSON.stringify(this.state.cart));
     } catch (error) {}
   }

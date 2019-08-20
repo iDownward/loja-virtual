@@ -32,6 +32,17 @@ export default class Cart extends React.Component {
     AsyncStorage.clear();
     this.setState({products: []});
   }
+
+  removeProduct = (id) => {
+    let products = this.state.products;
+    for(product of products){
+      if(product._id == id) {
+          products.splice(products.indexOf(product),1);
+          break;
+      }
+    }
+    this.setState({products});
+  }
   
   render() {
     var total = 0.0;
@@ -46,7 +57,7 @@ export default class Cart extends React.Component {
               data={this.state.products}
               keyExtractor={item => item._id}
               renderItem={({item}) => 
-                  <CardProduct product={item} navigation={this.props.navigation}/>
+                  <CardProduct product={item} navigation={this.props.navigation} removeProduct={_ => this.removeProduct(item._id)}/>
               }
             />
           </View>
