@@ -37,9 +37,7 @@ class Home extends React.Component{
     try {
       this.state.cart.push(product);
       AsyncStorage.setItem('cart', JSON.stringify(this.state.cart));
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   async componentDidMount(){

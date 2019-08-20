@@ -7,8 +7,7 @@ export default class Cart extends React.Component {
   constructor(props){
       super(props);
       this.state = {
-          products: [],
-          total: 0.0
+          products: []
       }
   }
   
@@ -28,6 +27,11 @@ export default class Cart extends React.Component {
       }
     
   } 
+
+  resetCart = () => {
+    AsyncStorage.clear();
+    this.setState({products: []});
+  }
   
   render() {
     var total = 0.0;
@@ -46,7 +50,7 @@ export default class Cart extends React.Component {
               }
             />
           </View>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={this.resetCart}>
              <Text style={styles.btnText}>Finalizar Compra</Text>
           </TouchableOpacity>
       </ScrollView>

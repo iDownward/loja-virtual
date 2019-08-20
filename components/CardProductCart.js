@@ -17,18 +17,20 @@ export default class CardProduct extends React.Component{
     const product = this.props.product;
     return (
       <TouchableOpacity style={styles.container} onPress={() => this.navigate()}>
-          <View style={styles.imgProduct}>
+          <View>
             <Image source={{uri: product.picture}} style={styles.imgProduct} />
-            <Text>
-            {product.name.length < 18 ? 
-                product.name : product.name.substring(0, 15) + '...'}
-            </Text>
           </View>
-          <Text style={{marginRight: 7}}> 
-            {product.description.length < 25 ? 
-                product.description : product.description.substring(0, 25) + '...'}
-          </Text>
-          <Text  style={{marginRight: 7}}>{product.price}</Text>
+          <View style={styles.body}>
+            <Text style={styles.bodyTitle}>{product.name}</Text>
+            <Text> 
+              {product.description.length < 35 ? 
+                  product.description : product.description.substring(0, 35) + '...'}
+            </Text>
+            <Text>R$ {product.price.toFixed(2)}</Text>
+          </View>
+          <TouchableOpacity>
+            <Text>APAGAR</Text>
+          </TouchableOpacity>
       </TouchableOpacity>
     );
   }
@@ -46,23 +48,18 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row'
   },
-  button: {
-    backgroundColor: '#F00',
-    marginTop: 'auto',
-    marginBottom: 5,
-    width: '80%',
-    height: screen_height/15,
-    alignSelf: 'center',
-    justifyContent: 'center'
-  },
-  btnText: {
-      textAlign: 'center',
-      color: '#FFF'
-  },
   imgProduct: {
       alignSelf: 'flex-start',
       height: '100%',
-      width: 100,
+      width: screen_width/4,
       marginRight: 5
+  },
+  body: {
+    marginLeft: 2,
+    justifyContent: 'center'
+  },
+  bodyTitle: {
+    fontSize: 20,
+    fontWeight: 'bold'
   }
 });
