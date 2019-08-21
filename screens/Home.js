@@ -1,53 +1,73 @@
 import React, {Fragment} from 'react';
-import Axios from 'react-native-axios';
+import API from '../API';
 import {
   SafeAreaView,
   Text,
-  StatusBar,
   FlatList,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  AsyncStorage
 } from 'react-native';
 
-import CardProduct from '../components/CardProduct';
+import CardProduct from '../components/CardProductHome';
 
 class Home extends React.Component{
-  static navigationOptions = {
-      title: 'Loja virtual',
+  static navigationOptions = ({navigation}) => {
+      return {
+        title: 'Loja Virtual'
+      };
   }
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+
     this.state = {
       products: []
     }
   }
 
-  componentDidMount(){
-    Axios.get('http://9.232.24.93:8080/api/product')
-      .then(response => this.setState({products: response.data}))
-      .catch(err => this.setState({products: []}));
+  async componentDidMount(){
+    const products = await API.getProducts();
+    let aux = [];                               //
+    for(let i = 1; i < products.length; i++){  //apagar depois
+      aux.push(products[i]);                    //
+    }                                           //
+    this.setState({
+      products: aux
+    });
   }
 
   render(){
     return (
       <Fragment>
-        <StatusBar barStyle="dark-content" />
         <SafeAreaView>
+        <Image source={require('../assets/company_logo.jpg')} style={styles.imgLogo}/>
         <Text>Produtos</Text>
         {this.state.products.length > 0 ?
           <FlatList horizontal={true}
             data={this.state.products}
-            keyExtractor={item => String(item.id)}
-            renderItem={ ({item}) => 
-              <CardProduct product={item} navigation={this.props.navigation}/>
+            keyExtractor={item => item._id}
+            renderItem={({item}) => 
+              <CardProduct
+                product={item}
+                navigation={this.props.navigation}
+              />
             }
           />
           :
-          <Text>Erroooooou</Text> 
+          <Text>Carregando... Ou deu erro</Text> 
         }
         </SafeAreaView>
       </Fragment>
     );
   }
 };
+
+const styles = StyleSheet.create({
+  imgLogo: {
+    alignSelf: 'center'
+  }
+});
 
 export default Home;

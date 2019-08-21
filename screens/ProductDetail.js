@@ -8,17 +8,15 @@ export default class ProductDetail extends React.Component {
   }
   
   render() {
-    const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
-    const productName = this.props.navigation.getParam('productName', 'NO-NAME');
-    const productDescription = this.props.navigation.getParam('productDescription', '');
-    const productPrice = this.props.navigation.getParam('productPrice', 'NO-PRICE');
+    const Bold = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
+    const {name, description, price, picture} = this.props.navigation.state.params;
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <Image source={require('../assets/react_native.png')} />  
+        <Image source={{uri: picture}} style={styles.imgProduct} />  
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{productName}</Text>
-          <Text style={styles.text}><B>Descricao: </B>{productDescription}</Text>
-          <Text style={styles.text}><B>Preco: </B>{productPrice}</Text>
+          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.text}><Bold>Descricao: </Bold>{description}</Text>
+          <Text style={styles.text}><Bold>Preco: </Bold>{price}</Text>
         </View>
       </ScrollView>
     );
@@ -40,5 +38,10 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 17,
         marginTop: 10
+    },
+    imgProduct: {
+      marginVertical: 50,
+      width: 140,
+      height: 140
     }
 });
