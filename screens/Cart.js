@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, FlatList, ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
 import CardProduct from '../components/CardProductCart';
-
+import CardSelector from '../components/CardSelector';
 
 export default class Cart extends React.Component {
 
@@ -14,7 +14,8 @@ export default class Cart extends React.Component {
   constructor(props){
       super(props);
       this.state = {
-          listProducts: []
+          listProducts: [],
+          cardBoxShow: false
       }
   }
 
