@@ -29,11 +29,13 @@ export default class CardProduct extends React.Component{
             </Text>
             <Text>R$ {product.price.toFixed(2)}</Text>
           </View>
-          <View style={styles.quantity}>
-            <TouchableOpacity onPress={this.props.removeProduct}>
-              <Text>MAIS</Text>
-              <Text>{product.quantity}</Text>
-              <Text>MENOS</Text>
+          <View style={styles.quantityContainer}>
+            <TouchableOpacity onPress={this.props.addProduct} style={styles.quantityButton}>
+              <Text style={styles.quantityText}>+</Text>
+            </TouchableOpacity>
+            <Text style={styles.quantityText}>{product.quantity}</Text>
+            <TouchableOpacity onPress={this.props.removeProduct} style={styles.quantityButton}>
+              <Text style={styles.quantityText}>-</Text>
             </TouchableOpacity>
           </View>
           
@@ -62,15 +64,25 @@ const styles = StyleSheet.create({
   },
   body: {
     marginLeft: 2,
+    flex: 0.6,
     justifyContent: 'center'
   },
   bodyTitle: {
     fontSize: 20,
     fontWeight: 'bold'
   },
-  quantity: {
+  quantityContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 1
+    flex: 0.4
+  },
+  quantityButton: {
+    height:'33%',
+    width: '100%'
+  },
+  quantityText: {
+    fontWeight: 'bold', 
+    fontSize: 25,
+    textAlign: 'center'
   }
 });

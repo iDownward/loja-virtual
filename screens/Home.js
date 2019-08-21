@@ -15,8 +15,6 @@ import CardProduct from '../components/CardProductHome';
 
 class Home extends React.Component{
 
-  //static cart = []
-
   static navigationOptions = ({navigation}) => {
       return {
         title: 'Loja Virtual',

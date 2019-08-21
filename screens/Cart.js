@@ -1,32 +1,32 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, FlatList, ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
 import CardProduct from '../components/CardProductCart';
-import Home from './Home';
+
 
 export default class Cart extends React.Component {
 
   static cart = [];
 
+  static navigationOptions = {
+    title: 'Carrinho',
+  }
+
   constructor(props){
       super(props);
       this.state = {
-          products: []
+          listProducts: []
       }
-  }
-  
-  static navigationOptions = {
-      title: 'Carrinho',
   }
 
   componentDidMount = async () => {
       try{
-        const products = await AsyncStorage.getItem('cart');
-        if (products) {
-            this.setState({products: JSON.parse(products)});
+        const listProducts = Cart.getCart();
+        if (listProducts) {
+            this.setState({listProducts});
         }
       }
       catch(error) {
-        this.setState({products: []});
+        this.setState({listProducts: []});
       }
     
   } 
@@ -35,11 +35,12 @@ export default class Cart extends React.Component {
     Cart.cart = cart;
   }
 
+  static getCart = () => Cart.cart;
+
   resetCart = () => {
     AsyncStorage.clear();
-    this.setState({products: []});
+    this.setState({listProducts: []});
     Cart.setCart([]);
-    //this.props.navigation.getParam('eraseCart', '')();
   }
 
   static addProduct = (product) => {
@@ -57,35 +58,44 @@ export default class Cart extends React.Component {
         Cart.cart.push(product);
       }
       AsyncStorage.setItem('cart', JSON.stringify(Cart.cart));
-      console.log('oi');
 
   }
 
-  removeProduct = (id) => {
-    let products = this.state.products;
-    for(product of products){
+  removeProduct = async (id) => {
+    let listProducts = this.state.listProducts;
+    for(product of listProducts){
       if(product._id == id) {
-          products.splice(products.indexOf(product),1);
+          product.quantity -= 1;
+          if(product.quantity == 0)
+            listProducts.splice(listProducts.indexOf(product),1);
           break;
       }
     }
-    this.setState({products});
+    await AsyncStorage.setItem('cart', JSON.stringify(listProducts));
+    Cart.setCart(listProducts);
+    this.setState({listProducts});
   }
   
   render() {
     var total = 0.0;
-    this.state.products.map((item) => {
+    this.state.listProducts.map((item) => {
       total += item.price * item.quantity;
     });
+    
     return (
       <ScrollView contentContainerStyle={styles.container}> 
           <Text style={styles.txtTotal}>Total: R$ {total.toFixed(2)}</Text>
           <View style={styles.list}>
             <FlatList
-              data={this.state.products}
+              data={this.state.listProducts}
               keyExtractor={item => item._id}
               renderItem={({item}) => 
-                  <CardProduct product={item} navigation={this.props.navigation} removeProduct={_ => this.removeProduct(item._id)}/>
+                  <CardProduct 
+                    product={item} 
+                    navigation={this.props.navigation} 
+                    removeProduct={_ => this.removeProduct(item._id)}
+                    addProduct={_ => Cart.addProduct(item)}
+                  />
               }
             />
           </View>
