@@ -5,6 +5,8 @@ import Home from './Home';
 
 export default class Cart extends React.Component {
 
+  static cart = [];
+
   constructor(props){
       super(props);
       this.state = {
@@ -29,10 +31,34 @@ export default class Cart extends React.Component {
     
   } 
 
+  static setCart = (cart) => {
+    Cart.cart = cart;
+  }
+
   resetCart = () => {
     AsyncStorage.clear();
     this.setState({products: []});
-    this.props.navigation.getParam('eraseCart', '')();
+    Cart.setCart([]);
+    //this.props.navigation.getParam('eraseCart', '')();
+  }
+
+  static addProduct = (product) => {
+
+      var found = false
+      Cart.cart.map(item => {
+        if(item._id === product._id) {
+          item.quantity += 1;
+          found = true;
+          return;
+        }
+      });
+      if(!found){
+        product['quantity'] = 1;
+        Cart.cart.push(product);
+      }
+      AsyncStorage.setItem('cart', JSON.stringify(Cart.cart));
+      console.log('oi');
+
   }
 
   removeProduct = (id) => {

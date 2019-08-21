@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import API from '../API';
+import Cart from './Cart';
 import {
   SafeAreaView,
   Text,
@@ -14,13 +15,13 @@ import CardProduct from '../components/CardProductHome';
 
 class Home extends React.Component{
 
-  static cart = []
+  //static cart = []
 
   static navigationOptions = ({navigation}) => {
       return {
         title: 'Loja Virtual',
         headerRight: (
-          <TouchableOpacity onPress={() => navigation.navigate('Cart', {eraseCart: Home.eraseCart})}>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
             <Image source={require('../assets/cart.png')} style={styles.imgCart} />
           </TouchableOpacity>
         )
@@ -35,31 +36,10 @@ class Home extends React.Component{
     }
   }
 
-  static eraseCart(){
-    cart = [];
-  }
-
-  addProduct = (product) => {
-    try {
-      var found = false
-      cart.map(item => {
-        if(item._id === product._id) {
-          item.quantity += 1;
-          found = true;
-          return;
-        }
-      });
-      if(!found){
-        product['quantity'] = 1;
-        cart.push(product);
-      }
-      AsyncStorage.setItem('cart', JSON.stringify(cart));
-    } catch (error) {}
-  }
-
   async componentDidMount(){
     const products = await API.getProducts();
-    cart = await API.getCart();
+    const cart = await API.getCart();
+    Cart.setCart(cart);
     let aux = [];
     for(let i = 1; i < products.length; i++){  //apagar depois
       aux.push(products[i]);
@@ -81,7 +61,7 @@ class Home extends React.Component{
               <CardProduct
                 product={item}
                 navigation={this.props.navigation}
-                addProduct={_ => this.addProduct(item)}
+                addProduct={_ => Cart.addProduct(item)}
               />
             }
           />

@@ -24,14 +24,19 @@ export default class CardProduct extends React.Component{
           <View style={styles.body}>
             <Text style={styles.bodyTitle}>{product.name}</Text>
             <Text> 
-              {product.description.length < 35 ? 
-                  product.description : product.description.substring(0, 35) + '...'}
+              {product.description.length < 25 ? 
+                  product.description : product.description.substring(0, 25) + '...'}
             </Text>
             <Text>R$ {product.price.toFixed(2)}</Text>
           </View>
-          <TouchableOpacity onPress={this.props.removeProduct}>
-            <Text>{product.quantity}</Text>
-          </TouchableOpacity>
+          <View style={styles.quantity}>
+            <TouchableOpacity onPress={this.props.removeProduct}>
+              <Text>MAIS</Text>
+              <Text>{product.quantity}</Text>
+              <Text>MENOS</Text>
+            </TouchableOpacity>
+          </View>
+          
       </TouchableOpacity>
     );
   }
@@ -62,5 +67,10 @@ const styles = StyleSheet.create({
   bodyTitle: {
     fontSize: 20,
     fontWeight: 'bold'
+  },
+  quantity: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1
   }
 });
