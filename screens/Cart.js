@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, FlatList, ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
 import CardProduct from '../components/CardProductCart';
+import Home from './Home';
 
 export default class Cart extends React.Component {
 
@@ -31,6 +32,7 @@ export default class Cart extends React.Component {
   resetCart = () => {
     AsyncStorage.clear();
     this.setState({products: []});
+    this.props.navigation.getParam('eraseCart', '')();
   }
 
   removeProduct = (id) => {
@@ -47,7 +49,7 @@ export default class Cart extends React.Component {
   render() {
     var total = 0.0;
     this.state.products.map((item) => {
-      total += item.price;
+      total += item.price * item.quantity;
     });
     return (
       <ScrollView contentContainerStyle={styles.container}> 

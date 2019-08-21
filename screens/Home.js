@@ -13,11 +13,14 @@ import {
 import CardProduct from '../components/CardProductHome';
 
 class Home extends React.Component{
+
+  static cart = []
+
   static navigationOptions = ({navigation}) => {
       return {
         title: 'Loja Virtual',
         headerRight: (
-          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart', {eraseCart: Home.eraseCart})}>
             <Image source={require('../assets/cart.png')} style={styles.imgCart} />
           </TouchableOpacity>
         )
@@ -28,38 +31,40 @@ class Home extends React.Component{
     super(props);
 
     this.state = {
-      products: [],
-      cart: []
+      products: []
     }
+  }
+
+  static eraseCart(){
+    cart = [];
   }
 
   addProduct = (product) => {
     try {
       var found = false
-      this.state.cart.map(item => {
+      cart.map(item => {
         if(item._id === product._id) {
           item.quantity += 1;
           found = true;
+          return;
         }
       });
       if(!found){
         product['quantity'] = 1;
-        this.state.cart.push(product);
+        cart.push(product);
       }
-      AsyncStorage.setItem('cart', JSON.stringify(this.state.cart));
+      AsyncStorage.setItem('cart', JSON.stringify(cart));
     } catch (error) {}
   }
 
   async componentDidMount(){
     const products = await API.getProducts();
-    const cart = await API.getCart();
+    cart = await API.getCart();
     let aux = [];
     for(let i = 1; i < products.length; i++){  //apagar depois
       aux.push(products[i]);
     }
-    this.setState({
-      products: aux, cart
-    });
+    this.setState({products: aux});
   }
 
   render(){
