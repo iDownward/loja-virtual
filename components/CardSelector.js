@@ -1,7 +1,21 @@
 import React from 'react';
-import { Text, View, Button, TouchableOpacity, FlatList, TextInput, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, FlatList, TextInput, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
+import API from '../API'
 
 export default class CardSelector extends React.Component {
+
+  state = {
+    listCards: []
+  }
+
+  async componentDidMount(){
+    const listCards = await API.getCards();
+    this.setState({listCards});
+  }
+
+  finishPurchase(){
+    AsyncStorage.clear();
+  }
 
   render() {
     return (
@@ -9,8 +23,20 @@ export default class CardSelector extends React.Component {
               <View style={styles.header}>
                 <Text>Escolha a forma de pagamento</Text>
               </View>
+              {this.state.listCards.length == [] ?
               <Text>Adicione uma forma de pagamento</Text>
-              <TouchableOpacity style={styles.button} onPress={this.props.addCard}>
+              :
+              <FlatList
+                  data={this.state.listCards}
+                  keyExtractor={(item) => item.numero}
+                  renderItem={({item}) => 
+                    <TouchableOpacity onPress={this.props.finishPurchase} style={styles.btnCard}>
+                      <Text>Cartao: ************{item.numero}</Text>
+                    </TouchableOpacity>
+                  }
+              />
+              }
+              <TouchableOpacity style={styles.btnFinish} onPress={this.props.addCard}>
                 <Text style={styles.btnText}>+</Text>
               </TouchableOpacity>
             </View>
@@ -26,20 +52,20 @@ const styles = StyleSheet.create({
     marginTop: screen_height/3,
     alignItems: 'center',
     width: screen_width/1.5,
-    height: screen_height/5,
     alignSelf: 'center',
     backgroundColor: '#EEE',
     borderColor: '#000',
     borderWidth: StyleSheet.hairlineWidth
   },
   header: {
-    height: '33%',
+    height: 40,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomColor: '#000',
     borderBottomWidth: StyleSheet.hairlineWidth
   },
-  button: {
+  btnFinish: {
       marginTop: 'auto',
       marginBottom: 5,
       width: '50%',
@@ -52,5 +78,9 @@ const styles = StyleSheet.create({
       color: '#BBB',
       fontWeight: 'bold',
       fontSize: 30
+  },
+  btnCard: {
+    marginVertical: 5,
+    
   }
 });

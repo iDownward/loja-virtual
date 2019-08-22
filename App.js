@@ -9,10 +9,12 @@ import { createAppContainer, createStackNavigator } from 'react-navigation';
 
 const App = createAppContainer(
   createStackNavigator({
+    
     Home,
     ProductDetail,
     Cart,
     CardRegister
+    
   })
 );
 

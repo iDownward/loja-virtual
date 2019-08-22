@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, FlatList, Modal,
+import { Text, View, TouchableOpacity, FlatList, Modal, ToastAndroid,
         ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
 import CardProduct from '../components/CardProductCart';
 import CardSelector from '../components/CardSelector';
@@ -39,9 +39,11 @@ export default class Cart extends React.Component {
   static getCart = () => Cart.cart;
 
   resetCart = () => {
-    AsyncStorage.clear();
-    this.setState({listProducts: []});
+    AsyncStorage.removeItem('cart');
+    this.setState({listProducts: [], modalVisible: false});
     Cart.setCart([]);
+    ToastAndroid.show('Compra realizada!', ToastAndroid.SHORT);
+    
   }
 
   openModal = () => {
@@ -101,7 +103,7 @@ export default class Cart extends React.Component {
                  transparent={true}
                  onRequestClose={_ => this.setState({modalVisible: false})} >
 
-            <CardSelector addCard={_ => this.addCard()} />
+            <CardSelector addCard={_ => this.addCard()} finishPurchase={_ => this.resetCart()}/>
           </Modal>
           <View style={styles.list}>
             <FlatList

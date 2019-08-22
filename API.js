@@ -22,4 +22,9 @@ export default class API{
     return list ? JSON.parse(list) : [];
   }
 
+  static async getCards() {
+    const list = await AsyncStorage.getItem('cards');
+    return list ? JSON.parse(list) : [];
+  }
+
 };
