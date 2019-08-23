@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, FlatList, TextInput, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, FlatList, Image, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
 import API from '../API'
 
 export default class CardSelector extends React.Component {
@@ -31,7 +31,8 @@ export default class CardSelector extends React.Component {
                   keyExtractor={(item) => item.numero}
                   renderItem={({item}) => 
                     <TouchableOpacity onPress={this.props.finishPurchase} style={styles.btnCard}>
-                      <Text>Cartao: ************{item.numero}</Text>
+                      <Image source={require('../assets/card.png')} style={{width: 20, height: 20}}/>
+                      <Text> {item.numero}</Text>
                     </TouchableOpacity>
                   }
               />
@@ -81,6 +82,6 @@ const styles = StyleSheet.create({
   },
   btnCard: {
     marginVertical: 5,
-    
+    flexDirection: 'row'
   }
 });

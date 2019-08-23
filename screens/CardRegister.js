@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
+import { Text, View, TextInput, Alert, TouchableOpacity, ToastAndroid, ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
 
 export default class CardRegister extends React.Component {
 
@@ -23,8 +23,23 @@ export default class CardRegister extends React.Component {
   }
 
   async saveCard(){
-    CardRegister.cards.push(this.state);
-    await AsyncStorage.setItem('cards', JSON.stringify(CardRegister.getCards()));
+    if(!this.validate())
+      Alert.alert('Erro', 'dados invalidos');
+    else {
+      CardRegister.cards.push(this.state);
+      await AsyncStorage.setItem('cards', JSON.stringify(CardRegister.getCards()));
+      this.props.navigation.navigate('Cart');
+      ToastAndroid.show('Cartao cadastrado!', ToastAndroid.SHORT);
+    }
+  }
+
+  validate(){
+    return (
+      this.state.numero.length == 16 &&
+      this.state.cvv.length == 3 &&
+      this.state.data.length == 10 &&
+      this.state.titular
+    );
   }
   
   render() {
@@ -51,6 +66,7 @@ export default class CardRegister extends React.Component {
             <Text style={styles.label}>CVV: </Text>
             <TextInput style={[styles.textInput, styles.textInputSmall]}
                 keyboardType="number-pad"
+                maxLength={10}
                 onChangeText={(text) => { this.setState({cvv: text})}} />
                 </View>
           </View>
