@@ -10,12 +10,27 @@ import {
 //import Icon from 'react-native-icons';
 
 export default class CardProduct extends React.Component{
+
+  state = {
+    product: this.props.product
+  }
+
   navigate = () => {
     this.props.navigation.navigate('ProductDetail', this.props.product);
   }
 
+  addProduct = () => {
+    this.props.addProduct();
+    this.setState({product: this.props.product});
+  }
+
+  removeProduct = () => {
+    this.props.removeProduct();
+    this.setState({product: this.props.product});
+  }
+
   render(){
-    const product = this.props.product;
+    const product = this.state.product;
     return (
       <TouchableOpacity style={styles.container} onPress={() => this.navigate()}>
           <View>
@@ -30,11 +45,11 @@ export default class CardProduct extends React.Component{
             <Text>R$ {product.price.toFixed(2)}</Text>
           </View>
           <View style={styles.quantityContainer}>
-            <TouchableOpacity onPress={this.props.addProduct} style={styles.quantityButton}>
+            <TouchableOpacity onPress={this.addProduct} style={styles.quantityButton}>
               <Text style={styles.quantityText}>+</Text>
             </TouchableOpacity>
             <Text style={styles.quantityText}>{product.quantity}</Text>
-            <TouchableOpacity onPress={this.props.removeProduct} style={styles.quantityButton}>
+            <TouchableOpacity onPress={this.removeProduct} style={styles.quantityButton}>
               <Text style={styles.quantityText}>-</Text>
             </TouchableOpacity>
           </View>

@@ -61,8 +61,8 @@ export default class Cart extends React.Component {
 
   }
 
-  removeProduct = async (id) => {
-    let listProducts = this.state.listProducts;
+  static removeProduct = async (id) => {
+    let listProducts = Cart.getCart();
     for(product of listProducts){
       if(product._id == id) {
           product.quantity -= 1;
@@ -73,7 +73,7 @@ export default class Cart extends React.Component {
     }
     await AsyncStorage.setItem('cart', JSON.stringify(listProducts));
     Cart.setCart(listProducts);
-    this.setState({listProducts});
+    
   }
   
   render() {
@@ -93,8 +93,14 @@ export default class Cart extends React.Component {
                   <CardProduct 
                     product={item} 
                     navigation={this.props.navigation} 
-                    removeProduct={_ => this.removeProduct(item._id)}
-                    addProduct={_ => Cart.addProduct(item)}
+                    removeProduct={_ => {
+                      Cart.removeProduct(item._id);
+                      this.setState({listProducts: Cart.getCart()});
+                    }}
+                    addProduct={_ => {
+                      Cart.addProduct(item); 
+                      this.setState({listProducts: Cart.getCart()});
+                    }}
                   />
               }
             />
