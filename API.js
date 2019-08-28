@@ -1,4 +1,7 @@
 import Axios from 'react-native-axios';
+import {
+  AsyncStorage
+} from 'react-native';
 
 
 export default class API{
@@ -11,6 +14,11 @@ export default class API{
     } catch (err) {
       return [];
     }
+  }
+
+  static async getCart() {
+    const list = await AsyncStorage.getItem('cart');
+    return list ? JSON.parse(list) : [];
   }
 
 };

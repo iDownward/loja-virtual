@@ -29,7 +29,7 @@ export default class CardProduct extends React.Component{
                 product.description : product.description.substring(0, 25) + '...'}
           </Text>
           <Text  style={{marginRight: 7}}>R$ {product.price.toFixed(2)}</Text>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={this.props.addProduct}>
               <Text style={styles.btnText}>Adicionar</Text>
           </TouchableOpacity>
       </TouchableOpacity>
