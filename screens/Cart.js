@@ -1,24 +1,26 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, FlatList, ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
+import { Text, View, TouchableOpacity, FlatList, Modal, ToastAndroid,
+        ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
 import CardProduct from '../components/CardProductCart';
-
+import CardSelector from '../components/CardSelector';
 
 export default class Cart extends React.Component {
 
   static cart = [];
 
   static navigationOptions = {
-    title: 'Carrinho',
+    title: 'Carrinho'
   }
 
   constructor(props){
       super(props);
       this.state = {
-          listProducts: []
+          listProducts: [],
+          modalVisible: false
       }
   }
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
       try{
         const listProducts = Cart.getCart();
         if (listProducts) {
@@ -28,7 +30,6 @@ export default class Cart extends React.Component {
       catch(error) {
         this.setState({listProducts: []});
       }
-    
   } 
 
   static setCart = (cart) => {
@@ -38,9 +39,15 @@ export default class Cart extends React.Component {
   static getCart = () => Cart.cart;
 
   resetCart = () => {
-    AsyncStorage.clear();
-    this.setState({listProducts: []});
+    AsyncStorage.removeItem('cart');
+    this.setState({listProducts: [], modalVisible: false});
     Cart.setCart([]);
+    ToastAndroid.show('Compra realizada!', ToastAndroid.SHORT);
+    
+  }
+
+  openModal = () => {
+    this.setState({modalVisible: true});
   }
 
   static addProduct = (product) => {
@@ -75,6 +82,11 @@ export default class Cart extends React.Component {
     Cart.setCart(listProducts);
     
   }
+
+  addCard(){
+    this.setState({modalVisible: false});
+    this.props.navigation.navigate('CardRegister');
+  }
   
   render() {
     var total = 0.0;
@@ -85,6 +97,14 @@ export default class Cart extends React.Component {
     return (
       <ScrollView contentContainerStyle={styles.container}> 
           <Text style={styles.txtTotal}>Total: R$ {total.toFixed(2)}</Text>
+          <Modal style={styles.modalContainer}
+                 animationType={'slide'} 
+                 visible={this.state.modalVisible}
+                 transparent={true}
+                 onRequestClose={_ => this.setState({modalVisible: false})} >
+
+            <CardSelector addCard={_ => this.addCard()} finishPurchase={_ => this.resetCart()}/>
+          </Modal>
           <View style={styles.list}>
             <FlatList
               data={this.state.listProducts}
@@ -105,7 +125,7 @@ export default class Cart extends React.Component {
               }
             />
           </View>
-          <TouchableOpacity style={styles.button} onPress={this.resetCart}>
+          <TouchableOpacity style={styles.button} onPress={this.openModal}>
              <Text style={styles.btnText}>Finalizar Compra</Text>
           </TouchableOpacity>
       </ScrollView>
@@ -122,6 +142,10 @@ const styles = StyleSheet.create({
     },
     list: {
       height: screen_height/1.7
+    },
+    modalContainer: {
+      alignSelf: 'center',
+      justifyContent: 'center'
     },
     button: {
       backgroundColor: '#F00',

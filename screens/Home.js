@@ -7,8 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  StyleSheet,
-  AsyncStorage
+  StyleSheet
 } from 'react-native';
 
 import CardProduct from '../components/CardProductHome';
