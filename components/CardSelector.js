@@ -13,10 +13,6 @@ export default class CardSelector extends React.Component {
     this.setState({listCards});
   }
 
-  finishPurchase(){
-    AsyncStorage.clear();
-  }
-
   render() {
     return (
             <View style={styles.modalContainer}>

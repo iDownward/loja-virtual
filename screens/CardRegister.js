@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, TextInput, Alert, TouchableOpacity, ToastAndroid, ScrollView, StyleSheet, AsyncStorage, Dimensions } from 'react-native';
+import API from '../API'
 
 export default class CardRegister extends React.Component {
 
@@ -21,7 +22,7 @@ export default class CardRegister extends React.Component {
     cvv: '',
     titular: ''
   }
-
+  
   async saveCard(){
     if(!this.validate())
       Alert.alert('Erro', 'dados invalidos');
@@ -33,11 +34,17 @@ export default class CardRegister extends React.Component {
     }
   }
 
+  setData(){
+    
+    if(this.state.data.length == 2)
+      this.setState({data: this.state.data + '/'});
+  }
+
   validate(){
     return (
       this.state.numero.length == 16 &&
       this.state.cvv.length == 3 &&
-      this.state.data.length == 10 &&
+      this.state.data.length == 5 &&
       this.state.titular
     );
   }
@@ -58,15 +65,18 @@ export default class CardRegister extends React.Component {
             <View style={{flex: 1}}>
             <Text style={styles.label}>Data: </Text>
             <TextInput style={[styles.textInput, styles.textInputSmall]} 
+              value={this.state.data}
               keyboardType="number-pad"
-              maxLength={10}
+              maxLength={5}
+              placeholder="mm/aa"
+              onKeyPress={this.setData.bind(this)}
               onChangeText={(text) => { this.setState({data: text})}}/>
               </View>
               <View style={{flex: 1}}>
             <Text style={styles.label}>CVV: </Text>
             <TextInput style={[styles.textInput, styles.textInputSmall]}
                 keyboardType="number-pad"
-                maxLength={10}
+                maxLength={3}
                 onChangeText={(text) => { this.setState({cvv: text})}} />
                 </View>
           </View>
